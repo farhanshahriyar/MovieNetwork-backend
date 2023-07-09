@@ -50,6 +50,14 @@ async function run() {
       res.json(await users.find({}).toArray());
     })
 
+
+    // 
+    app.put ('/api/saveuser/:email', async (req, res) => {
+      const email = req.params.email;
+      const updatedUser = req.body;
+      const result = await users.updateOne({ email: email }, { $set: updatedUser }, { upsert: true });
+      res.json(result);
+    });
     
 
     //delete user by id 7/3/23
@@ -195,7 +203,16 @@ async function run() {
 
       // <------------------------------------->
 
-   
+   // search api
+    app.get('/api/search/:value', async (req, res) => {
+      try {
+        const { value } = req.params;
+        const searchResult = await products.find({ name: { $regex: value, $options: 'i' } }).toArray();
+        res.json(searchResult);
+      } catch(err) {
+        res.status(500).json({ message: err.message });
+      }
+    });
 
 
   // added forget-password 7/3/23
