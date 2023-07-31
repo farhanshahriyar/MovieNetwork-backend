@@ -4,13 +4,14 @@ const nodemailer = require('nodemailer'); // added nodemailer 7/3/23
 const mongoose = require('mongoose'); // changed import to require
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 
 
 app.use(cors());
 app.use(express.json())
 // connectDB();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const uri = "mongodb+srv://movienetwork25:movienetwork6768@cluster0.ee3mlpi.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -287,8 +288,9 @@ async function run() {
       
     }
   }
- 
+
+
+run().catch(console.dir);
 app.listen(5000, () => {
     console.log('Server running on port 5000')
-    run().catch(console.dir);
 });
